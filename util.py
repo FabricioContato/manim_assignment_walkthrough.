@@ -2,16 +2,6 @@ import gTTS
 import os
 from mutagen.wave import WAVE
 
-# The text that you want to convert to audio
-mytext = 'Welcome to geeksforgeeks Joe!'
-
-# Language in which you want to convert
-language = 'en'
-
-myobj = gTTS(text=mytext, lang=language, slow=False)
-
-myobj.save("welcome.mp3")
-
 def generate_audio_file_from_text(text, file_name, file_extention=".mp3", language="en", replace_older_file=False):
     file_name_already_exists = os.path.isfile(r"./" + file_name + file_extention)
 
@@ -22,7 +12,6 @@ def generate_audio_file_from_text(text, file_name, file_extention=".mp3", langua
     if not file_name_already_exists:
         gTTS(text=text, lang=language, slow=False).save(file_name + file_extention)
 
-
 def add_audio_to_video_from_text(scene, text, file_name, file_extention=".mp3", language="en", replace_older_file=False ,sync=True):
     generate_audio_file_from_text(text=text, file_name=file_name, file_extention=file_extention, language=language, replace_older_file=replace_older_file)
 
@@ -31,3 +20,17 @@ def add_audio_to_video_from_text(scene, text, file_name, file_extention=".mp3", 
     if sync:
         wait_time = WAVE(file_name + file_extention).info.length
         scene.wait(wait_time)
+
+def add_parallel_audioTTS_with_animation(scene, animation, text, cue_word, file_name, file_extention=".mp3", language="en", replace_older_file=False):
+    
+    add_audio_to_video_from_text(scene=scene, text=text, file_name=file_name, file_extention=file_extention, language=language, replace_older_file=replace_older_file ,sync=False)
+
+    if cue_word is str and cue_word in text:
+        cue_index = text.find(cue_word)
+        partial_text = text[: cue_index + len(cue_word)]
+        file_name_for_partial_text = 'cue_'+ cue_word + "_for_" + file_name
+        generate_audio_file_from_text(text=partial_text, file_name=file_name_for_partial_text, file_extention=file_extention, language=language, replace_older_file=replace_older_file)
+        wait_time = WAVE(file_name_for_partial_text + file_extention).info.length * .8
+        scene.wait(wait_time)
+
+    scene.play(animation)
