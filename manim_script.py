@@ -53,9 +53,13 @@ class Ex35(Scene):
 
         #p_of_iw_outcomes_sample_second_halth_group.arrange(direction=UP, aligned_edge=RIGHT).scale(0.8)
 
-        p_of_fh_intersection_iw = MathTex(r"P(Iw\cap Fh)=\frac{a1}{1-r}")
+        p_of_fh_intersection_iw = MathTex(r"P(Iw\cap Fh)=", r"\frac{a1}{1-r}")
 
-        p_of_fh_intersection_iw_2 =  MathTex(r"P(Iw\cap Fh)=\frac{p^{2}}{1-pq}")
+        p_of_fh_intersection_iw_2 =  MathTex(r"P(Iw\cap Fh)=", r"\frac{p^{2}}{1-pq}")
+
+        p_of_ft_intersection_iw_1 = MathTex(r"P(Iw\cap Ft)=", r"\frac{a1}{1-r}")
+
+        p_of_ft_intersection_iw_2 =  MathTex(r"P(Iw\cap Ft)=", r"\frac{p^{2}q}{1-pq}")
 
         p_of_hh_ht_group = VGroup(MathTex("P(HH)=p^{2}"), MathTex("P(HT)=pq")).arrange(direction=DOWN, aligned_edge=LEFT)
 
@@ -109,9 +113,9 @@ class Ex35(Scene):
 
         p_of_fh_intersection_iw_2.move_to(p_of_fh_intersection_iw.get_center()).align_to(p_of_fh_intersection_iw, direction=LEFT)
 
-        self.play(TransformMatchingTex(p_of_fh_intersection_iw, p_of_fh_intersection_iw_2))
-
         self.play(Write(p_of_hh_ht_group))
+
+        self.play(TransformMatchingTex(p_of_fh_intersection_iw, p_of_fh_intersection_iw_2))
 
         self.play(FadeOut(VGroup(p_of_iw_outcomes_sample_group, p_of_iw_outcomes_sample_second_halth_group, p_of_hh_ht_group)))
 
@@ -129,8 +133,79 @@ class Ex35(Scene):
 
         self.play(Write(iw_outcomes_sample_group))
 
+        p_iw_1.scale(0.6).next_to(iw_outcomes_sample_group, RIGHT)
+
+        self.play(Write(p_iw_1))
+
+        self.play(FadeOut(p_iw_1))
+
         red_into_white_animations = [outcome.animate.set_color(WHITE) for outcome in iw_outcomes_sample_group[:-1:2]]
         white_into_blue_animations = [outcome.animate.set_color(BLUE) for outcome in iw_outcomes_sample_group[1:-1:2]]
 
         self.play(*red_into_white_animations,*white_into_blue_animations)
-        #self.play(*[Write(outcome) for outcome in p_of_iw_outcomes_sample_second_halth_group[1::2]])
+
+        [p_of_iw_outcomes_sample_group[-1 - i].next_to(iw_outcomes_sample_group[-2 - i], RIGHT, buff=.2) for i in range(7)]
+
+        [outcome.align_to(p_of_iw_outcomes_sample_group[-1], RIGHT) for outcome in p_of_iw_outcomes_sample_group[:-1]]
+
+        p_of_iw_outcomes_sample_group.set_color(BLACK)
+
+        self.play(VGroup(iw_outcomes_sample_group, p_of_iw_outcomes_sample_group).animate.center())
+
+        self.play(*[Write(outcome.set_color(WHITE)) for outcome in p_of_iw_outcomes_sample_group[1::2]])
+
+        [p_of_iw_outcomes_sample_second_halth_group[-1 - i].next_to(p_of_iw_outcomes_sample_group[-1 - i], RIGHT, buff=.2) for i in range(7)]
+
+        [outcome.align_to(p_of_iw_outcomes_sample_second_halth_group[-1], LEFT) for outcome in p_of_iw_outcomes_sample_second_halth_group[:-1]]
+
+        p_of_iw_outcomes_sample_second_halth_group.set_color(BLACK)
+
+        self.play(VGroup(iw_outcomes_sample_group, p_of_iw_outcomes_sample_group, p_of_iw_outcomes_sample_second_halth_group).animate.center())
+
+        self.play(*[Write(outcome.set_color(WHITE)) for outcome in p_of_iw_outcomes_sample_second_halth_group[1::2]])
+
+        self.play(FadeOut(iw_outcomes_sample_group))
+
+        p_of_ft_intersection_iw_1.next_to(p_of_iw_outcomes_sample_second_halth_group, RIGHT, aligned_edge=UP, buff=0.5).set_color(BLACK)
+        
+        self.play(VGroup(p_of_iw_outcomes_sample_group, p_of_iw_outcomes_sample_second_halth_group, p_of_ft_intersection_iw_1).animate.center())
+
+        self.play(Write(p_of_ft_intersection_iw_1.set_color(WHITE)))
+
+        p_of_thh_th_group.next_to(p_of_ft_intersection_iw_1, DOWN, aligned_edge=LEFT, buff=.5)
+
+        self.play(Write(p_of_thh_th_group))
+
+        p_of_ft_intersection_iw_2.move_to(p_of_ft_intersection_iw_1.get_center())
+
+        self.play(TransformMatchingTex(p_of_ft_intersection_iw_1, p_of_ft_intersection_iw_2))
+
+        self.play(FadeOut(VGroup(p_of_iw_outcomes_sample_group, p_of_iw_outcomes_sample_second_halth_group, p_of_thh_th_group)))
+
+        p_iw_1.scale(1/.6).center()
+
+        self.play(Write(p_iw_1))
+
+        self.play(p_of_fh_intersection_iw_2.animate.scale(1/.5))
+
+        self.play(p_of_fh_intersection_iw_2.animate.next_to(p_iw_1, LEFT))
+
+        self.play(TransformMatchingTex(p_iw_1, p_iw_2))
+
+        self.play(TransformMatchingTex(p_iw_2, p_iw_3))
+
+        self.play(
+            FadeOut(p_of_ft_intersection_iw_2),
+            FadeOut(p_of_fh_intersection_iw_2),
+            p_iw_3.animate.next_to(Point(), direction=DOWN, buff=1.5),
+            p_fh_given_iw_4.animate.center())
+
+        self.play(TransformMatchingTex(p_fh_given_iw_4, p_fh_given_iw_5))
+
+        self.play(TransformMatchingTex(p_fh_given_iw_5, p_fh_given_iw_6))
+
+        self.play(TransformMatchingTex(p_fh_given_iw_6, p_fh_given_iw_7))
+
+        self.play(TransformMatchingTex(p_fh_given_iw_7, p_fh_given_iw_8))
+        #self.play(p_fh_given_iw_4.animate.center())
+
