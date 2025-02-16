@@ -1,7 +1,10 @@
 from manim import *
+from util import *
 
 class Ex35(Scene):
     def construct(self):
+
+        # creating graphic objects
 
         question_text = Text(text="""
         You and I play the following game: 
@@ -37,8 +40,6 @@ class Ex35(Scene):
 
         iw_outcomes_sample_group.arrange(direction=UP, aligned_edge=RIGHT)
 
-        #animation_list = [outcome.animate.set_color(RED) for outcome in iw_outcomes_sample_group[0:-1:2]]
-
         p_of_iw_outcomes_sample_group = VGroup(*[MathTex("P(",outcome.get_tex_string(),")=").scale(.8).next_to(outcome, RIGHT, buff=0.2) for outcome in iw_outcomes_sample_group[:-1]])
         
         [outcome.align_to(p_of_iw_outcomes_sample_group[-1], direction=RIGHT) for outcome in p_of_iw_outcomes_sample_group[:-1]]
@@ -50,8 +51,6 @@ class Ex35(Scene):
                 p_of_iw_outcomes_sample_second_halth_group.add(MathTex(f"P(HT)^{{{ len(outcome[:-1]) // 2}}} \\cdot " if  len(outcome[:-1]) > 0 else "", r" P(HH)").scale(.8))
             else:
                 p_of_iw_outcomes_sample_second_halth_group.add(MathTex(f"P(TH)^{{{ len(outcome[:-2]) // 2}}} \\cdot " if  len(outcome[:-2]) > 0 else "", r" P(THH)").scale(.8))
-
-        #p_of_iw_outcomes_sample_second_halth_group.arrange(direction=UP, aligned_edge=RIGHT).scale(0.8)
 
         p_of_fh_intersection_iw = MathTex(r"P(Iw\cap Fh)=", r"\frac{a1}{1-r}")
 
@@ -65,9 +64,19 @@ class Ex35(Scene):
 
         p_of_thh_th_group = VGroup(MathTex("P(THH)=p^{2}q"), MathTex("P(TH)=pq")).arrange(direction=DOWN, aligned_edge=LEFT)
 
+        # Animating
 
+        #introduction
+        add_parallel_audioTTS_with_animation(
+            scene=self,
+            animation=Write(question_text),
+            text= "Our question states the following",
+            cue_word="states",
+            file_name="introduction",
+            replace_older_file=False
+                                            )
 
-        self.play(Write(question_text))
+        #self.play(Write(question_text))
 
         self.play(question_text.animate.to_edge(UP))
 
@@ -188,7 +197,7 @@ class Ex35(Scene):
 
         self.play(p_of_fh_intersection_iw_2.animate.scale(1/.5))
 
-        self.play(p_of_fh_intersection_iw_2.animate.next_to(p_iw_1, LEFT))
+        self.play(p_of_fh_intersection_iw_2.animate.next_to(p_of_ft_intersection_iw_2, LEFT))
 
         self.play(TransformMatchingTex(p_iw_1, p_iw_2))
 
@@ -207,5 +216,3 @@ class Ex35(Scene):
         self.play(TransformMatchingTex(p_fh_given_iw_6, p_fh_given_iw_7))
 
         self.play(TransformMatchingTex(p_fh_given_iw_7, p_fh_given_iw_8))
-        #self.play(p_fh_given_iw_4.animate.center())
-
