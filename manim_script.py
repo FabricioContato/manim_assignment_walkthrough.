@@ -15,7 +15,7 @@ class Ex35(Scene):
                             ).scale(.4)
 
         p_of_h_t_group = VGroup(MathTex(r"P(H)=p"), MathTex("P(T)=1-p=q")).arrange(direction=DOWN, buff=0.2, aligned_edge=LEFT)
-        
+
         p_fh_given_iw_1 = MathTex("P(Fh|Iw)=", "?")
         p_fh_given_iw_2 = MathTex("P(Fh|Iw)=", r"\frac{P(Iw|Fh)\cdot P(Fh)}{P(Iw)}")
         p_fh_given_iw_3 = MathTex("P(Fh|Iw)=", r"\frac{P(Iw\cap Fh)}{P(Iw)}")
@@ -24,6 +24,10 @@ class Ex35(Scene):
         p_fh_given_iw_6 = MathTex("P(Fh|Iw)=", r"\frac{1}{1 + q}")
         p_fh_given_iw_7 = MathTex("P(Fh|Iw)=", r"\frac{1}{1 + (1 - p)}")
         p_fh_given_iw_8 = MathTex("P(Fh|Iw)=", r"\frac{1}{2 - p}")
+
+        fh_is = VGroup(MathTex("Fh "), Text(": Heads in the first coin toss").scale(0.7)).arrange(RIGHT).next_to(p_fh_given_iw_1, DOWN)
+        iw_is = VGroup(MathTex("Iw "), Text(": I won (HH observed)").scale(0.7)).arrange(RIGHT).next_to(fh_is, DOWN, buff=0.2)
+        fh_iw_are = VGroup(fh_is, iw_is)
 
         p_iw_1 = MathTex("P(Iw)=", r"P(Iw\cap Fh)+P(Iw\cap Ft)")
         p_iw_2 = MathTex("P(Iw)=", r"p^{2}\cdot (1 - pq)^{-1} + p^{2}q \cdot (1 - pq)^{-1}")
@@ -66,7 +70,6 @@ class Ex35(Scene):
 
         # Animating
 
-        #introduction
         add_parallel_audioTTS_with_animation(
             scene=self,
             animation=Write(question_text),
@@ -75,22 +78,54 @@ class Ex35(Scene):
             file_name="introduction",
             replace_older_file=False
                                             )
+        
+        self.wait(0.5)
 
-        #self.play(Write(question_text))
-
-        self.play(question_text.animate.to_edge(UP))
-
-        self.play(Write(p_of_h_t_group))
-
+        add_parallel_audioTTS_with_animation(
+            scene=self,
+            animation=[question_text.animate.to_edge(UP), Write(p_of_h_t_group)],
+            text= "Before anything, let's define the probability of Heads and Tails",
+            cue_word="probability",
+            file_name="p_of_heads_tails",
+            replace_older_file=False
+                                            )
+        
         self.play(p_of_h_t_group.animate.to_edge(DL))
 
-        self.play(Write(p_fh_given_iw_1))
+        add_parallel_audioTTS_with_animation(
+            scene=self,
+            animation=Write(p_fh_given_iw_1),
+            text= """Now, let's see what our question wants.
+                     We must find the probability of Heads in the first coin toss given the I won.
+                     """,
+            cue_word="probability",
+            file_name="what_the_question_wants",
+            replace_older_file=True
+                                            )
 
-        self.play(TransformMatchingTex(p_fh_given_iw_1, p_fh_given_iw_2))
+        self.wait(0.5)
+
+        add_parallel_audioTTS_with_animation(
+            scene=self,
+            animation=Write(fh_iw_are),
+            text= "Let's call the heads in the first coin toss as F h, and I won as I w.",
+            cue_word="F h",
+            file_name="what_fh_iw_are",
+            replace_older_file=False
+                                            )
+        
+        add_parallel_audioTTS_with_animation(
+            scene=self,
+            animation=[FadeOut(fh_iw_are), TransformMatchingTex(p_fh_given_iw_1, p_fh_given_iw_2)],
+            text= "Thanks to the Bayesian theorem, we have the following",
+            cue_word="theorem",
+            file_name="Bayesian_theorem",
+            replace_older_file=False
+                                            )
 
         self.play(TransformMatchingTex(p_fh_given_iw_2, p_fh_given_iw_3))
 
-        self.play(p_fh_given_iw_3.animate.to_edge(DR))
+        self.play(p_fh_given_iw_3.animate.to_edge(DR), FadeOut(fh_iw_are))
 
         self.play(Write(iw_outcomes_sample_group))
 
