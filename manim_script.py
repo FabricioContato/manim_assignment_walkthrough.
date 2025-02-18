@@ -1,6 +1,7 @@
 from manim import *
 from util import *
 
+
 class Ex35(Scene):
     def construct(self):
 
@@ -29,7 +30,7 @@ class Ex35(Scene):
         iw_is = VGroup(MathTex("Iw "), Text(": I won (HH observed)").scale(0.7)).arrange(RIGHT).next_to(fh_is, DOWN, buff=0.2)
         fh_iw_are = VGroup(fh_is, iw_is)
 
-        p_iw_1 = MathTex("P(Iw)=", r"P(Iw\cap Fh)+P(Iw\cap Ft)")
+        p_iw_1 = MathTex("P(Iw)=", r"P(Iw\cap Fh)", r"+", r"P(Iw\cap Ft)")
         p_iw_2 = MathTex("P(Iw)=", r"p^{2}\cdot (1 - pq)^{-1} + p^{2}q \cdot (1 - pq)^{-1}")
         p_iw_3 = MathTex("P(Iw)=", r"p^{2}\cdot(1 + q) \cdot (1 - pq)^{-1}")
 
@@ -79,12 +80,12 @@ class Ex35(Scene):
             replace_older_file=False
                                             )
         
-        self.wait(0.5)
+        self.wait(0.8)
 
         add_parallel_audioTTS_with_animation(
             scene=self,
             animation=[question_text.animate.to_edge(UP), Write(p_of_h_t_group)],
-            text= "Before anything, let's define the probability of Heads and Tails",
+            text= "Before anything else, let's define the probability of Heads and Tails.",
             cue_word="probability",
             file_name="p_of_heads_tails",
             replace_older_file=False
@@ -95,15 +96,14 @@ class Ex35(Scene):
         add_parallel_audioTTS_with_animation(
             scene=self,
             animation=Write(p_fh_given_iw_1),
-            text= """Now, let's see what our question wants.
-                     We must find the probability of Heads in the first coin toss given the I won.
-                     """,
+            text= """Now, let's see what our question asks for.
+                     We must find the probability of getting Heads on the first coin toss, given that I won.""",
             cue_word="probability",
             file_name="what_the_question_wants",
-            replace_older_file=True
+            replace_older_file=False
                                             )
 
-        self.wait(0.5)
+        self.wait(0.8)
 
         add_parallel_audioTTS_with_animation(
             scene=self,
@@ -114,6 +114,8 @@ class Ex35(Scene):
             replace_older_file=False
                                             )
         
+        self.wait(0.8)
+        
         add_parallel_audioTTS_with_animation(
             scene=self,
             animation=[FadeOut(fh_iw_are), TransformMatchingTex(p_fh_given_iw_1, p_fh_given_iw_2)],
@@ -122,111 +124,310 @@ class Ex35(Scene):
             file_name="Bayesian_theorem",
             replace_older_file=False
                                             )
+        
+        self.wait(0.8)
+        
+        add_parallel_audioTTS_with_animation(
+            scene=self,
+            animation=TransformMatchingTex(p_fh_given_iw_2, p_fh_given_iw_3),
+            text= "Let's work with intersection form of the numerator",
+            cue_word="intersection",
+            file_name="intersection_form_of_the_numerator",
+            replace_older_file=False
+                                            )
+        
+        self.wait(0.8)
 
-        self.play(TransformMatchingTex(p_fh_given_iw_2, p_fh_given_iw_3))
+        add_parallel_audioTTS_with_animation(
+            scene=self,
+            animation=p_fh_given_iw_3.animate.to_edge(DR),
+            text= "this intersection accounts for each outcome where I win and first coin is heads. But Let's first take a look at a sample of outcomes where I win",
+            cue_word="sample",
+            file_name="intersection_accounts_for",
+            replace_older_file=False
+                                            )
+        
+        self.wait(0.8)
 
-        self.play(p_fh_given_iw_3.animate.to_edge(DR), FadeOut(fh_iw_are))
+        add_parallel_audioTTS_with_animation(
+            scene=self,
+            animation=Write(iw_outcomes_sample_group[0]),
+            text= "The first outcome where I win is the simplest one made of only two heads",
+            cue_word="two",
+            file_name="first_outcome_where_I_win",
+            replace_older_file=False
+                                            )
 
-        self.play(Write(iw_outcomes_sample_group))
+        self.wait(0.8)
 
-        self.play(*[outcome.animate.set_color(RED) for outcome in iw_outcomes_sample_group[0:-1:2]])
+        add_parallel_audioTTS_with_animation(
+            scene=self,
+            animation=Write(iw_outcomes_sample_group[1]),
+            text= """The second outcome where I win is made of 3 coin tosses. It must start with tails since it is not possible for a sequence to have 3 consecutive heads.
+                     Note that it is not part of the intersection we saw before since it does not start with heads""",
+            cue_word="tails",
+            file_name="second_outcome_where_I_win",
+            replace_older_file=False
+                                            )
+        
+        self.wait(0.8)
+
+        add_parallel_audioTTS_with_animation(
+            scene=self,
+            animation=Write(iw_outcomes_sample_group[2]),
+            text= """The third outcome where I win is made of 4 coin tosses. It must start with heads since two tails couldn't be observed if I won.
+                     Note that it is part of the intersection we saw before since it does start with heads""",
+            cue_word="heads",
+            file_name="third_outcome_where_I_win",
+            replace_older_file=False
+                                            )
+        
+        self.wait(0.8)
+
+        add_parallel_audioTTS_with_animation(
+            scene=self,
+            animation=Write(iw_outcomes_sample_group[3:]),
+            text= """We can keep following this pattern as long as we want. there are infinite possible outcomes where I win""",
+            cue_word="infinite",
+            file_name="infinit_possible_outcomes",
+            replace_older_file=False
+                                            )
+
+        self.wait(0.8)
+
+        add_parallel_audioTTS_with_animation(
+            scene=self,
+            animation=AnimationGroup([outcome.animate.set_color(RED) for outcome in iw_outcomes_sample_group[0:-1:2]], run_time=1),
+            text= """Let's highlights the outcomes that belong to the intersection we want. which are the ones that start with H. """,
+            cue_word="start",
+            file_name="outcomes_that_start_with_H",
+            replace_older_file=False
+                                            )
+
+        self.wait(1)
 
         p_of_iw_outcomes_sample_group.set_color(BLACK)
 
         self.play(VGroup(iw_outcomes_sample_group, p_of_iw_outcomes_sample_group).animate.center())
 
-        self.play(*[Write(outcome.set_color(WHITE)) for outcome in p_of_iw_outcomes_sample_group[0::2]])
+        _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
+            scene=self, 
+            text="""The probability of the intersection is the sum of the probability of each outcome that belong to it.""",
+            cue_word="outcome",
+            file_name="sum_of_the_probability1",
+            replace_older_file=False,
+            sync=False
+            )
+        self.wait(cue_time)
+        self.play(*[Write(outcome.set_color(WHITE)) for outcome in p_of_iw_outcomes_sample_group[0::2]] , run_time=remaning_time_after_cue)
+
+        self.wait(0.8)
 
         [outcome_r.next_to(outcome_l, RIGHT, buff=0.2) for outcome_l, outcome_r in zip(p_of_iw_outcomes_sample_group[:], p_of_iw_outcomes_sample_second_halth_group[:])]
 
         p_of_iw_outcomes_sample_second_halth_group.set_color(BLACK)
 
-        self.play(VGroup(iw_outcomes_sample_group, p_of_iw_outcomes_sample_group, p_of_iw_outcomes_sample_second_halth_group).animate.center())
+        _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
+            scene=self,
+            text="""We can't contemplate all infinite probabilities here, but let's see if these sample follows any pattern.""",
+            file_name='any_pattern1',
+            cue_word="follows",
+            replace_older_file=False,
+            sync=False
+        )
 
-        self.play([Write(outcome.set_color(WHITE)) for outcome in p_of_iw_outcomes_sample_second_halth_group[::2]])
+        self.wait(cue_time)
+        self.play(VGroup(iw_outcomes_sample_group, p_of_iw_outcomes_sample_group, p_of_iw_outcomes_sample_second_halth_group).animate.center(), run_time=remaning_time_after_cue/2 )
+        self.play(*[Write(outcome.set_color(WHITE)) for outcome in p_of_iw_outcomes_sample_second_halth_group[::2]], run_time=remaning_time_after_cue/2)
 
-        self.play(FadeOut(iw_outcomes_sample_group))
+        self.wait(1)
 
         p_of_fh_intersection_iw.set_color(BLACK).next_to(p_of_iw_outcomes_sample_second_halth_group, RIGHT, aligned_edge=UP, buff=0.3)
 
-        self.play(VGroup(p_of_iw_outcomes_sample_group, p_of_iw_outcomes_sample_second_halth_group, p_of_fh_intersection_iw).animate.center())
+        _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
+            scene=self,
+            text="""Note that it follows an infinite geometric sequence. Therefore, to sum all of them, we just need a simple formula""",
+            file_name="infinite_geometric_sequence",
+            cue_word="them",
+            replace_older_file=False,
+            sync=False
+        )
+        self.wait(cue_time)
+        self.play(FadeOut(iw_outcomes_sample_group), run_time=remaning_time_after_cue/3)
+        self.play(VGroup(p_of_iw_outcomes_sample_group, p_of_iw_outcomes_sample_second_halth_group, p_of_fh_intersection_iw).animate.center(), run_time=remaning_time_after_cue/3)
+        self.play(Write(p_of_fh_intersection_iw.set_color(WHITE)), run_time=remaning_time_after_cue/3)
 
-        self.play(Write(p_of_fh_intersection_iw.set_color(WHITE)))
+        self.wait(1)
 
         p_of_hh_ht_group.next_to(p_of_fh_intersection_iw, DOWN, aligned_edge=LEFT)
 
         p_of_fh_intersection_iw_2.move_to(p_of_fh_intersection_iw.get_center()).align_to(p_of_fh_intersection_iw, direction=LEFT)
 
-        self.play(Write(p_of_hh_ht_group))
+        _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
+            scene=self,
+            text="""a 1.  is the first term of the sequence. Here, it is P of H H""",
+            file_name="p_of_hh",
+            cue_word="it",
+            replace_older_file=False,
+            sync=False
+        )
+
+        self.wait(cue_time)
+        self.play(Write(p_of_hh_ht_group[0]), run_time=remaning_time_after_cue)
+
+        self.wait(1)
+
+        _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
+            scene=self,
+            text="""r.  the ratio of the sequence. Here, it is P of H T""",
+            file_name="p_of_ht",
+            cue_word="it",
+            replace_older_file=False,
+            sync=False
+        )
+
+        self.wait(cue_time)
+        self.play(Write(p_of_hh_ht_group[1]), run_time=remaning_time_after_cue)
+
+        self.wait(1)
 
         self.play(TransformMatchingTex(p_of_fh_intersection_iw, p_of_fh_intersection_iw_2))
 
         self.play(FadeOut(VGroup(p_of_iw_outcomes_sample_group, p_of_iw_outcomes_sample_second_halth_group, p_of_hh_ht_group)))
 
-        self.play(p_fh_given_iw_3.animate.center())
+        _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
+            scene=self,
+            text="""Now, let's update our main equation""",
+            file_name="update_our_main_equation",
+            cue_word="update",
+            replace_older_file=False,
+            sync=False
+        )
 
+        self.wait(cue_time)
+        self.play(p_fh_given_iw_3.animate.center(), run_time=remaning_time_after_cue)
         self.play(TransformMatchingTex(p_fh_given_iw_3, p_fh_given_iw_4))
 
-        self.play(p_fh_given_iw_4.animate.to_edge(DR), p_of_fh_intersection_iw_2.animate.next_to(p_of_h_t_group, direction=UP, buff=0.1))
-
-        self.play(VGroup(p_of_fh_intersection_iw_2, p_of_h_t_group).animate.scale(.5))
-
-        self.play(VGroup(p_of_fh_intersection_iw_2, p_of_h_t_group).animate.to_edge(DL))
+        self.wait(1)
 
         iw_outcomes_sample_group.center()
 
+        _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
+            scene=self,
+            text="""In order to finish our main equation. We just need P of I win. 
+                    So, Let's take a second look at our sample of outcomes.""",
+            file_name="to_finish_our_main_equation",
+            cue_word="look",
+            replace_older_file=False,
+            sync=False
+        )
+        self.wait(cue_time)
+        self.play(p_fh_given_iw_4.animate.to_edge(DR), p_of_fh_intersection_iw_2.animate.next_to(p_of_h_t_group, direction=UP, buff=0.1))
+        self.play(VGroup(p_of_fh_intersection_iw_2, p_of_h_t_group).animate.scale(.5))
+        self.play(VGroup(p_of_fh_intersection_iw_2, p_of_h_t_group).animate.to_edge(DL))
         self.play(Write(iw_outcomes_sample_group))
 
+        self.wait(1)
+
         p_iw_1.scale(0.6).next_to(iw_outcomes_sample_group, RIGHT)
-
-        self.play(Write(p_iw_1))
-
-        self.play(FadeOut(p_iw_1))
 
         red_into_white_animations = [outcome.animate.set_color(WHITE) for outcome in iw_outcomes_sample_group[:-1:2]]
         white_into_blue_animations = [outcome.animate.set_color(BLUE) for outcome in iw_outcomes_sample_group[1:-1:2]]
 
-        self.play(*red_into_white_animations,*white_into_blue_animations)
+        p_iw_1[-3].set_color(RED)
 
+        _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
+            scene=self,
+            text="""Note that to find P of I win. we need to sum the probabilities of each these infinite outcomes.
+                    We already have the sum of those that start with Heads. We still need the sum of those that start with Tails""",
+            file_name="We_still_need_the_sum_of",
+            cue_word="have",
+            replace_older_file=False,
+            sync=False
+        )
+        self.wait(cue_time)
+        self.play(Write(p_iw_1), run_time=remaning_time_after_cue/2)
+        self.play(*red_into_white_animations,*white_into_blue_animations, p_iw_1[-3].animate.set_color(WHITE) ,p_iw_1[-1].animate.set_color(BLUE), run_time=remaning_time_after_cue/2)
+
+        self.wait(1)
+
+        self.play(FadeOut(p_iw_1))
         [p_of_iw_outcomes_sample_group[-1 - i].next_to(iw_outcomes_sample_group[-2 - i], RIGHT, buff=.2) for i in range(7)]
-
         [outcome.align_to(p_of_iw_outcomes_sample_group[-1], RIGHT) for outcome in p_of_iw_outcomes_sample_group[:-1]]
-
         p_of_iw_outcomes_sample_group.set_color(BLACK)
-
         self.play(VGroup(iw_outcomes_sample_group, p_of_iw_outcomes_sample_group).animate.center())
-
         self.play(*[Write(outcome.set_color(WHITE)) for outcome in p_of_iw_outcomes_sample_group[1::2]])
-
         [p_of_iw_outcomes_sample_second_halth_group[-1 - i].next_to(p_of_iw_outcomes_sample_group[-1 - i], RIGHT, buff=.2) for i in range(7)]
-
         [outcome.align_to(p_of_iw_outcomes_sample_second_halth_group[-1], LEFT) for outcome in p_of_iw_outcomes_sample_second_halth_group[:-1]]
-
         p_of_iw_outcomes_sample_second_halth_group.set_color(BLACK)
-
         self.play(VGroup(iw_outcomes_sample_group, p_of_iw_outcomes_sample_group, p_of_iw_outcomes_sample_second_halth_group).animate.center())
-
         self.play(*[Write(outcome.set_color(WHITE)) for outcome in p_of_iw_outcomes_sample_second_halth_group[1::2]])
 
-        self.play(FadeOut(iw_outcomes_sample_group))
+        self.wait(1)
 
         p_of_ft_intersection_iw_1.next_to(p_of_iw_outcomes_sample_second_halth_group, RIGHT, aligned_edge=UP, buff=0.5).set_color(BLACK)
-        
-        self.play(VGroup(p_of_iw_outcomes_sample_group, p_of_iw_outcomes_sample_second_halth_group, p_of_ft_intersection_iw_1).animate.center())
 
+        _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
+            scene=self,
+            text="""Note that they also are a infinite geometric sequence.""",
+            file_name="they_also_are_a_infinite_geometric",
+            cue_word="geometric",
+            replace_older_file=False,
+            sync=False
+        )
+        self.wait(cue_time)
+        self.play(FadeOut(iw_outcomes_sample_group))
+        self.play(VGroup(p_of_iw_outcomes_sample_group, p_of_iw_outcomes_sample_second_halth_group, p_of_ft_intersection_iw_1).animate.center())
         self.play(Write(p_of_ft_intersection_iw_1.set_color(WHITE)))
+
+        self.wait(1)
 
         p_of_thh_th_group.next_to(p_of_ft_intersection_iw_1, DOWN, aligned_edge=LEFT, buff=.5)
 
-        self.play(Write(p_of_thh_th_group))
+
+        _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
+            scene=self,
+            text="""a 1.  is the first term of the sequence. Here, it is P of T H H""",
+            file_name="P_of_THH",
+            cue_word="it",
+            replace_older_file=False,
+            sync=False
+        )
+        self.wait(cue_time)
+        self.play(Write(p_of_thh_th_group[0]), run_time=remaning_time_after_cue)
+
+        self.wait(1)
+
+        _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
+            scene=self,
+            text="""r.  is the ratio of the sequence. Here, it is P of T H""",
+            file_name="P_of_TH",
+            cue_word="it",
+            replace_older_file=False,
+            sync=False
+        )
+        self.wait(cue_time)
+        self.play(Write(p_of_thh_th_group[1]), run_time=remaning_time_after_cue)
+
+        self.wait(1)
 
         p_of_ft_intersection_iw_2.move_to(p_of_ft_intersection_iw_1.get_center())
-
         self.play(TransformMatchingTex(p_of_ft_intersection_iw_1, p_of_ft_intersection_iw_2))
-
         self.play(FadeOut(VGroup(p_of_iw_outcomes_sample_group, p_of_iw_outcomes_sample_second_halth_group, p_of_thh_th_group)))
 
-        p_iw_1.scale(1/.6).center()
+        self.wait(1)
+
+        p_iw_1.set_color(WHITE).scale(1/.6).center()
+
+        _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
+            scene=self,
+            text="""Now we can find the P of I win""",
+            file_name="we_can_find_the_P_of_I_win",
+            cue_word="P",
+            replace_older_file=False,
+            sync=False
+        )
+        self.wait(cue_time)
 
         self.play(Write(p_iw_1))
 
@@ -234,20 +435,67 @@ class Ex35(Scene):
 
         self.play(p_of_fh_intersection_iw_2.animate.next_to(p_of_ft_intersection_iw_2, LEFT))
 
+        self.wait(1)
+
         self.play(TransformMatchingTex(p_iw_1, p_iw_2))
 
+        self.wait(1)
+
         self.play(TransformMatchingTex(p_iw_2, p_iw_3))
+
+        _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
+            scene=self,
+            text="""With that we can complete our main equation""",
+            file_name="we_can_complete_our_main_equation",
+            cue_word=None,
+            replace_older_file=True,
+            sync=True
+        )
+        #self.wait(cue_time)
 
         self.play(
             FadeOut(p_of_ft_intersection_iw_2),
             FadeOut(p_of_fh_intersection_iw_2),
             p_iw_3.animate.next_to(Point(), direction=DOWN, buff=1.5),
             p_fh_given_iw_4.animate.center())
+        
+        self.wait(1)
 
         self.play(TransformMatchingTex(p_fh_given_iw_4, p_fh_given_iw_5))
+        self.play(FadeOut(p_iw_3))
+
+        _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
+            scene=self,
+            text="""Let's get rid off common factors""",
+            file_name="common_factors",
+            cue_word=None,
+            replace_older_file=False,
+            sync=True
+        )
 
         self.play(TransformMatchingTex(p_fh_given_iw_5, p_fh_given_iw_6))
 
+        _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
+            scene=self,
+            text="""Remanber that q, is 1 minus p""",
+            file_name="Remanber_that_q",
+            cue_word=None,
+            replace_older_file=False,
+            sync=True
+        )
+
         self.play(TransformMatchingTex(p_fh_given_iw_6, p_fh_given_iw_7))
 
+        self.wait(1)
+
         self.play(TransformMatchingTex(p_fh_given_iw_7, p_fh_given_iw_8))
+
+        _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
+            scene=self,
+            text="""There we have it""",
+            file_name="There_we_have_it",
+            cue_word=None,
+            replace_older_file=False,
+            sync=True
+        )
+        self.wait(1)
