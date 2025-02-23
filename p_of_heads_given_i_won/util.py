@@ -26,7 +26,7 @@ def generate_audio_file_from_text(text, file_name, file_path ,file_extention=".m
     file_name_already_exists = os.path.isfile(file_path + file_name + file_extention)
 
     if file_name_already_exists and replace_older_file:
-        os.remove(file_name + file_extention)
+        os.remove(file_path + file_name + file_extention)
         file_name_already_exists = False
 
     if not file_name_already_exists:
