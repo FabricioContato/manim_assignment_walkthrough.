@@ -34,6 +34,12 @@ class n_plus1_heads_fair_and_unfair_coin(Scene):
         the_question_wants2 = MathTex(r"P(H_{n+1th} | H_{n})=", r" \frac{P(H_{n} | H_{n+1th}) \cdot P(H_{n+1th})}{P(H_{n})}")
         the_question_wants3 = MathTex(r"P(H_{n+1th} | H_{n})=", r"\frac{P(H_{n} \cap H_{n+1th} )}{P(H_{n})}")
         the_question_wants4 = MathTex(r"P(H_{n+1th} | H_{n})=", r" \frac{\frac{1}{2} \cdot ((\frac{1}{2})^{n+1} + 1)}{P(H_{n})}")
+        the_question_wants5 = MathTex(r"P(H_{n+1th} | H_{n})=", r" \frac{\frac{1}{2} \cdot ((\frac{1}{2})^{n+1} + 1)}{\frac{1}{2} \cdot ((\frac{1}{2})^{n} + 1)}")
+        the_question_wants6 = MathTex(r"P(H_{n+1th} | H_{n})=", r" \frac{(\frac{1}{2})^{n+1} + 1}{(\frac{1}{2})^{n} + 1}")
+        the_question_wants7 = MathTex(r"P(H_{n+1th} | H_{n})=", r" \frac{(2^{-1})^{n+1} + 1}{(2^{-1})^{n} + 1}")
+        the_question_wants8 = MathTex(r"P(H_{n+1th} | H_{n})=", r" \frac{(2)^{-n-1} + 1}{(2)^{-n} + 1}")
+        the_question_wants9 = MathTex(r"P(H_{n+1th} | H_{n})=", r" \frac{(2)^{-n-1} + 1}{(2)^{-n} + 1} \cdot \frac{2^{n}}{2^{n}")
+        the_question_wants10 = MathTex(r"P(H_{n+1th} | H_{n})=", r" \frac{(2)^{-1} + 2^{n}}{1 + 2^{n}}")
 
         p_of_n_plus1_heads = MathTex(r"P(H_{n+1})=", r"P(H_{n+1} | F_{c}) \cdot P(F_{c}) + P(H_{n+1} | F_{c}^c) \cdot P(F_{c}^c)")
 
@@ -68,7 +74,7 @@ class n_plus1_heads_fair_and_unfair_coin(Scene):
                   what is the probability that the n + 1 coin toss will also result in heads?""",
             cue_word="following",
             file_name="introduction",
-            replace_older_file=True,
+            replace_older_file=False,
             sync=False )
 
         self.wait(cue_time)
@@ -412,3 +418,25 @@ class n_plus1_heads_fair_and_unfair_coin(Scene):
 
         self.play(TransformMatchingTex(p_of_hn_eq2, p_of_hn_eq3))
         self.play(TransformMatchingTex(p_of_hn_eq3, p_of_hn_eq4))
+
+        self.play(
+            FadeOut(p_of_fcoin_unfcoin),
+            FadeOut(p_of_hn_given_group),
+            FadeOut(p_of_hn_given_fc3),
+            p_of_hn_eq4.animate.next_to(venn_diagram, RIGHT, buff=.2, aligned_edge=UP)
+        )
+
+        the_question_wants4.set_opacity(1)
+        self.play(FadeIn(the_question_wants4))
+        the_question_wants5.move_to(the_question_wants4.get_center()).align_to(the_question_wants4, LEFT)
+        self.play(TransformMatchingTex(the_question_wants4, the_question_wants5))
+        the_question_wants6.move_to(the_question_wants4.get_center()).align_to(the_question_wants4, LEFT)
+        self.play(TransformMatchingTex(the_question_wants5, the_question_wants6))
+        the_question_wants7.move_to(the_question_wants4.get_center()).align_to(the_question_wants4, LEFT)
+        self.play(TransformMatchingTex(the_question_wants6, the_question_wants7))
+        the_question_wants8.move_to(the_question_wants4.get_center()).align_to(the_question_wants4, LEFT)
+        self.play(TransformMatchingTex(the_question_wants7, the_question_wants8))
+        the_question_wants9.move_to(the_question_wants4.get_center()).align_to(the_question_wants4, LEFT)
+        self.play(TransformMatchingTex(the_question_wants8, the_question_wants9))
+        the_question_wants10.move_to(the_question_wants4.get_center()).align_to(the_question_wants4, LEFT)
+        self.play(TransformMatchingTex(the_question_wants9, the_question_wants10))
