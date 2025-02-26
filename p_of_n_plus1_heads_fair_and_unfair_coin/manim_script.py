@@ -23,8 +23,6 @@ class n_plus1_heads_fair_and_unfair_coin(Scene):
                             VGroup(MathTex(r"H_{n+1th} :"),Text("Set of outcomes with heads on the n+1 th toss")).arrange(RIGHT, buff=0.2),
                             VGroup(MathTex(r"H_{n} :"),Text("Set of outcomes with heads on the n firt tosses")).arrange(RIGHT, buff=0.2)
                             ).scale(0.7).arrange(DOWN, buff=0.2)
-        
-        #test = MathTex(r"\frac{", r"x", r"}",r"{T}")
 
         n_plus1_heads_example = MathTex(r" \frac{?}{1^{th}} \; \; \frac{?}{2^{th}}\; \; \bullet\bullet\bullet \; \; \frac{?}{n^{th}}  \; \;  \frac{H}{(n+1)^{th}}")
         n_heads_example = MathTex(r" \frac{H}{1^{th}} \; \; \frac{H}{2^{th}}\; \; \bullet\bullet\bullet \; \; \frac{H}{n^{th}}  \; \;  \frac{?}{(n+1)^{th}}")
@@ -50,7 +48,7 @@ class n_plus1_heads_fair_and_unfair_coin(Scene):
         VGroup(hn_set, hn1th_set).arrange(direction=DOWN, buff=-.5)
         venn_diagram = VGroup(s_set, hn_set, hn1th_set)
 
-        intersenction_set = Intersection(hn_set[0], hn1th_set[0], color=ORANGE, fill_opacity=0) #MathTex(r"Hm").scale(0.7)
+        intersenction_set = Intersection(hn_set[0], hn1th_set[0], color=ORANGE, fill_opacity=0)
 
         aux_sqrs = VGroup(Square(side_length=10),Square(side_length=10)).arrange(direction=RIGHT, buff=0)
 
@@ -59,10 +57,46 @@ class n_plus1_heads_fair_and_unfair_coin(Scene):
         fcoin_hn_part = Intersection(hn_set[0], aux_sqrs[0], color=BLUE, fill_opacity=1).set_opacity(0)
         nfcoin_hn_part = Intersection(hn_set[0], aux_sqrs[1], color=PURPLE, fill_opacity=1).set_opacity(0)
 
-        
+        hn_inter_hnplus1 = MathTex(r"P(H_{n} \cap H_{n+1th})", "=", r"P(H_{n} \cap H_{n+1th} \cap F_{c})", "+", r"P(H_{n} \cap H_{n+1th} \cap F_{c}^c)")
 
-        #VGroup(venn_diagram, fcoin_hn_part, nfcoin_hn_part).to_edge(LEFT, buff=0)
-        #venn_diagram.center()
+        hn_inter_hnplus1_eq_hall =  MathTex(r"H_{n} \cap H_{n+1th} = H_{all}")
+
+        hall = MathTex(r"P(H_{all})", "=", r"P(H_{all} \cap F_{c})", "+", r"P(H_{all} \cap F_{c}^c)")
+
+        hall2 = MathTex(r"P(H_{all})", "=", r"P(H_{all} | F_{c}) \cdot P(F_{c})", "+", r"P(H_{all} | F_{c}^c) \cdot P(F_{c}^c)")
+
+        p_of_hall_given_fc = MathTex(r"P(H_{all} | F_{c})=", r"(\frac{1}{2})^{n+1}")
+
+        p_of_hall_given_fcc = MathTex(r"P(H_{all} | F_{c}^c)=", "1")
+
+        p_of_hall_given_group = VGroup(p_of_hall_given_fc, p_of_hall_given_fcc).arrange(DOWN, buff=0.2, aligned_edge=LEFT)
+
+        hall3 = MathTex(r"P(H_{all})", "=", r"(\frac{1}{2})^{n+1} \cdot \frac{1}{2}", "+", r"1 \cdot \frac{1}{2}")
+
+        hall4 = MathTex(r"P(H_{all})", "=", r"\frac{1}{2} \cdot ((\frac{1}{2})^{n+1} + 1)")
+
+        p_of_hn_eq1 = MathTex("P(H_{n})", "=", r"P(H_{n} \cap F_{c}) + P(H_{n} \cap F_{c}^c)")
+
+        p_of_hn_eq2 = MathTex("P(H_{n})", "=", r"P(H_{n} | F_{c}) \cdot P(F_{c}) + P(H_{n} | F_{c}^c) \cdot P(F_{c}^c)")
+
+        p_of_hn_eq3 = MathTex("P(H_{n})", "=", r"\frac{1}{2}^n \cdot \frac{1}{2} + 1 \cdot \frac{1}{2}")
+
+        p_of_hn_eq4 = MathTex("P(H_{n})", "=", r"\frac{1}{2} \cdot (\frac{1}{2}^n + 1 )")
+
+        p_of_hn_given_fc1 = MathTex(r"P(H_{n} | F_{c})=", r" 2 \cdot \frac{1}{2}^{n+1}")
+
+        p_of_hn_given_fcc = MathTex(r"P(H_{n} | F_{c}^c)=", "1")
+
+        p_of_hn_given_group = VGroup(p_of_hn_given_fc1, p_of_hn_given_fcc).arrange(DOWN, buff=0.2, aligned_edge=LEFT)
+
+        p_of_hn_given_fc2 = MathTex(r"P(H_{n} | F_{c})=", r" \frac{1}{2}^{-1} \cdot \frac{1}{2}^{n+1}")
+
+        p_of_hn_given_fc3 = MathTex(r"P(H_{n} | F_{c})=", r" \frac{1}{2}^{n}")
+
+        n_heads_outcomes_for_fc = VGroup(
+                    MathTex(r" \frac{H}{1^{th}} \; \; \frac{H}{2^{th}}\; \; \bullet\bullet\bullet \; \; \frac{H}{n^{th}}  \; \;  \frac{H}{(n+1)^{th}}").scale(0.5),
+                    MathTex(r" \frac{H}{1^{th}} \; \; \frac{H}{2^{th}}\; \; \bullet\bullet\bullet \; \; \frac{H}{n^{th}}  \; \;  \frac{T}{(n+1)^{th}}").scale(0.5)
+                ).arrange(DOWN, buff=0.1).to_edge(DOWN, buff=0)
 
         _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
             scene=self,
@@ -189,7 +223,6 @@ class n_plus1_heads_fair_and_unfair_coin(Scene):
         
         self.wait(1.5)
 
-        #meaning_of_sets_Fc_Fcc.next_to(all_heads_example, DOWN, buff=0.3)
         meaning_of_sets_Fc_Fcc.to_edge(DOWN, buff=0)
 
         _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
@@ -248,7 +281,6 @@ class n_plus1_heads_fair_and_unfair_coin(Scene):
         self.play(the_question_wants3.animate.to_edge(RIGHT))
         self.play(Write(venn_diagram))
 
-#the_question_wants3.animate.move_to(all_heads_example.get_center())
         
         self.wait(2)
 
@@ -267,28 +299,21 @@ class n_plus1_heads_fair_and_unfair_coin(Scene):
 
         self.play(venn_diagram.animate.to_edge(LEFT, buff=0))
 
-        hn_inter_hnplus1 = MathTex(r"P(H_{n} \cap H_{n+1th})", "=", r"P(H_{n} \cap H_{n+1th} \cap F_{c})", "+", r"P(H_{n} \cap H_{n+1th} \cap F_{c}^c)")
         hn_inter_hnplus1.scale(0.7).next_to(venn_diagram, RIGHT, buff=0.2)
 
         self.play(Write(hn_inter_hnplus1), FadeOut(the_question_wants3))
 
-        hn_inter_hnplus1_eq_hall =  MathTex(r"H_{n} \cap H_{n+1th} = H_{all}")
         hn_inter_hnplus1_eq_hall.next_to(hn_inter_hnplus1, UP, buff=1, aligned_edge=LEFT)
         
         self.play(Write(hn_inter_hnplus1_eq_hall))
 
-        hall = MathTex(r"P(H_{all})", "=", r"P(H_{all} \cap F_{c})", "+", r"P(H_{all} \cap F_{c}^c)")
         hall.next_to(venn_diagram, RIGHT, buff=0.2)
 
         self.play(TransformMatchingTex(hn_inter_hnplus1, hall))
 
-        hall2 = MathTex(r"P(H_{all})", "=", r"P(H_{all} | F_{c}) \cdot P(F_{c})", "+", r"P(H_{all} | F_{c}^c) \cdot P(F_{c}^c)")
         hall2.scale(0.9).next_to(venn_diagram, RIGHT, buff=0.2)
         self.play(TransformMatchingTex(hall,hall2))
 
-        p_of_hall_given_fc = MathTex(r"P(H_{all} | F_{c})=", r"(\frac{1}{2})^{n+1}")
-        p_of_hall_given_fcc = MathTex(r"P(H_{all} | F_{c}^c)=", "1")
-        p_of_hall_given_group = VGroup(p_of_hall_given_fc, p_of_hall_given_fcc).arrange(DOWN, buff=0.2, aligned_edge=LEFT)
         p_of_hall_given_group.scale(0.85)
 
         p_of_fcoin_unfcoin.scale(0.85)
@@ -310,13 +335,9 @@ class n_plus1_heads_fair_and_unfair_coin(Scene):
 
         self.play(Write(p_of_hall_given_group[1][1]))
         
-
-        hall3 = MathTex(r"P(H_{all})", "=", r"(\frac{1}{2})^{n+1} \cdot \frac{1}{2}", "+", r"1 \cdot \frac{1}{2}")
         hall3.move_to(hall2.get_center()).align_to(hall2, LEFT)
 
         self.play(TransformMatchingTex(hall2, hall3))
-
-        hall4 = MathTex(r"P(H_{all})", "=", r"\frac{1}{2} \cdot ((\frac{1}{2})^{n+1} + 1)")
 
         hall4.move_to(hall3.get_center()).align_to(hall3, LEFT)
 
@@ -352,30 +373,19 @@ class n_plus1_heads_fair_and_unfair_coin(Scene):
 
         self.play(FadeOut(the_question_wants4))
 
-        p_of_hn_eq1 = MathTex("P(H_{n})", "=", r"P(H_{n} \cap F_{c}) + P(H_{n} \cap F_{c}^c)")
-
         p_of_hn_eq1.move_to(the_question_wants4.get_center()).align_to(the_question_wants4, LEFT)
 
         self.play(Write(p_of_hn_eq1))
 
-        p_of_hn_eq2 = MathTex("P(H_{n})", "=", r"P(H_{n} | F_{c}) \cdot P(F_{c}) + P(H_{n} | F_{c}^c) \cdot P(F_{c}^c)")
         p_of_hn_eq2.scale(.9)
         p_of_hn_eq2.move_to(the_question_wants4.get_center()).align_to(the_question_wants4, LEFT)
 
-        p_of_hn_eq3 = MathTex("P(H_{n})", "=", r"\frac{1}{2}^n \cdot \frac{1}{2} + 1 \cdot \frac{1}{2}")
-        p_of_hn_eq4 = MathTex("P(H_{n})", "=", r"\frac{1}{2} \cdot (\frac{1}{2}^n + 1 )")
-
         self.play(TransformMatchingTex(p_of_hn_eq1, p_of_hn_eq2))
-
-        p_of_hn_given_fc1 = MathTex(r"P(H_{n} | F_{c})=", r" 2 \cdot \frac{1}{2}^{n+1}")
-        p_of_hn_given_fcc = MathTex(r"P(H_{n} | F_{c}^c)=", "1")
-        p_of_hn_given_group = VGroup(p_of_hn_given_fc1, p_of_hn_given_fcc).arrange(DOWN, buff=0.2, aligned_edge=LEFT)
 
         p_of_hn_given_group.next_to(p_of_fcoin_unfcoin, RIGHT, buff=1.3)
 
-        p_of_hn_given_fc2 = MathTex(r"P(H_{n} | F_{c})=", r" \frac{1}{2}^{-1} \cdot \frac{1}{2}^{n+1}")
         p_of_hn_given_fc2.move_to(p_of_hn_given_fc1.get_center()).align_to(p_of_hn_given_fc1, LEFT)
-        p_of_hn_given_fc3 = MathTex(r"P(H_{n} | F_{c})=", r" \frac{1}{2}^{n}")
+
         p_of_hn_given_fc3.move_to(p_of_hn_given_fc1.get_center()).align_to(p_of_hn_given_fc1, LEFT)
 
         self.play(FadeIn(p_of_fcoin_unfcoin))
@@ -386,11 +396,6 @@ class n_plus1_heads_fair_and_unfair_coin(Scene):
 
         self.play(FadeOut(meaning_of_sets_Fc_Fcc))
         self.play(FadeIn(n_heads_example))
-
-        n_heads_outcomes_for_fc = VGroup(
-            MathTex(r" \frac{H}{1^{th}} \; \; \frac{H}{2^{th}}\; \; \bullet\bullet\bullet \; \; \frac{H}{n^{th}}  \; \;  \frac{H}{(n+1)^{th}}").scale(0.5),
-            MathTex(r" \frac{H}{1^{th}} \; \; \frac{H}{2^{th}}\; \; \bullet\bullet\bullet \; \; \frac{H}{n^{th}}  \; \;  \frac{T}{(n+1)^{th}}").scale(0.5)
-        ).arrange(DOWN, buff=0.1).to_edge(DOWN, buff=0)
 
         self.play(FadeOut(n_heads_example))
         self.play(FadeIn(n_heads_outcomes_for_fc))
