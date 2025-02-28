@@ -20,8 +20,8 @@ class n_plus1_heads_fair_and_unfair_coin(Scene):
                             ).scale(0.7).arrange(DOWN, buff=0.2)
         
         meaning_of_sets_hnplus_hn = VGroup(
-                            VGroup(MathTex(r"H_{n+1th} :"),Text("Set of outcomes with heads on the n+1 th toss")).arrange(RIGHT, buff=0.2),
-                            VGroup(MathTex(r"H_{n} :"),Text("Set of outcomes with heads on the n firt tosses")).arrange(RIGHT, buff=0.2)
+                            VGroup(MathTex(r"H_{n+1th} :"),Text("Set of outcomes with Heads on the (n+1)th toss.")).arrange(RIGHT, buff=0.2),
+                            VGroup(MathTex(r"H_{n} :"),Text("Set of outcomes with Heads in the first n tosses.")).arrange(RIGHT, buff=0.2)
                             ).scale(0.7).arrange(DOWN, buff=0.2)
 
         n_plus1_heads_example = MathTex(r" \frac{?}{1^{th}} \; \; \frac{?}{2^{th}}\; \; \bullet\bullet\bullet \; \; \frac{?}{n^{th}}  \; \;  \frac{H}{(n+1)^{th}}")
@@ -119,7 +119,7 @@ class n_plus1_heads_fair_and_unfair_coin(Scene):
         _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
             scene=self,
             text= """Now, let's see what our question asks for.
-                     We must find the probability of heads in the n plus 1 toss given that the n previus results are heads 
+                     We must find the probability of heads in the n plus 1 toss given that the previous n results were Heads. 
                      """,
             cue_word="probability",
             file_name="what_the_question_wants",
@@ -138,7 +138,7 @@ class n_plus1_heads_fair_and_unfair_coin(Scene):
 
         _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
             scene=self,
-            text= "H n plus 1 is the set of outcomes with heads in the n plus 1 toss" ,
+            text= "H n plus 1 is the set of outcomes with Heads on the n plus 1 toss." ,
             cue_word="set",
             file_name="H_n_plus_1_is_the_set",
             replace_older_file=False,
@@ -148,13 +148,13 @@ class n_plus1_heads_fair_and_unfair_coin(Scene):
         self.wait(cue_time)
         self.play(Write(meaning_of_sets_hnplus_hn[0]), Write(n_plus1_heads_example))
 
-        self.wait(1.2)
+        self.wait(2)
 
         n_heads_example.move_to(n_plus1_heads_example.get_center())
 
         _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
             scene=self,
-            text= "H n  is the set of outcomes with heads in the first n tosses" ,
+            text= "H n is the set of outcomes with Heads in the first n tosses." ,
             cue_word="set",
             file_name="H_n_is_the_set",
             replace_older_file=False,
@@ -171,7 +171,7 @@ class n_plus1_heads_fair_and_unfair_coin(Scene):
 
         _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
             scene=self,
-            text= "Thanks to Bayes' Theorem, we have the following" ,
+            text= "Thanks to Bayes' theorem, we have the following." ,
             cue_word="Theorem",
             file_name="Bayesian_theorem",
             replace_older_file=False,
@@ -190,7 +190,7 @@ class n_plus1_heads_fair_and_unfair_coin(Scene):
 
         _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
             scene=self,
-            text= "Let's work with the intersection form of the numerator." ,
+            text= "Let's use the intersection form of the numerator." ,
             cue_word="intersection",
             file_name="intersection_form_of_the_numerator",
             replace_older_file=False,
@@ -198,13 +198,15 @@ class n_plus1_heads_fair_and_unfair_coin(Scene):
                                             )
         
         self.wait(cue_time)
-        self.play(TransformMatchingTex(the_question_wants2, the_question_wants3))
+        self.play(TransformMatchingTex(the_question_wants2, the_question_wants3), run_time=remaning_time_after_cue)
+
+        self.wait(1)
 
         all_heads_example.next_to(the_question_wants3, DOWN, buff=0.5)
 
         _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
             scene=self,
-            text= """This intersection can be interpreted as the set where all n plus 1 tosses are heads.
+            text= """This intersection can be interpreted as the set where all n plus 1 tosses are Heads.
                    """ ,
             cue_word="all",
             file_name="intersection_can_be_interpreted",
@@ -227,9 +229,9 @@ class n_plus1_heads_fair_and_unfair_coin(Scene):
 
         _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
             scene=self,
-            text= """But if I ask you the probability of n plus 1 Heads.
+            text= """But if I ask you the probability of getting n plus 1 Heads
                      You may answer that:
-                     It depends on the coin we are using.
+                     it depends on the coin we are using.
                      The fair coin, or the double heads coin
                    """ ,
             cue_word="answer that",
@@ -263,7 +265,7 @@ class n_plus1_heads_fair_and_unfair_coin(Scene):
 
         _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
             scene=self,
-            text= """Let's take a look at a venn diagram
+            text= """Let's take a look at a Venn diagram
                    """ ,
             cue_word="look",
             file_name="venn_diagram",
@@ -281,13 +283,38 @@ class n_plus1_heads_fair_and_unfair_coin(Scene):
         self.play(the_question_wants3.animate.to_edge(RIGHT))
         self.play(Write(venn_diagram))
 
-        
-        self.wait(2)
+        self.wait(1)
 
         self.play(Write(intersenction_set), the_question_wants3.animate.set_color(ORANGE))
 
+        _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
+            scene=self,
+            text= """The orange part is our intersection.
+                     Part of its outcomes comes from the fair coin.
+                   """ ,
+            cue_word=None,
+            file_name="The_orange_part",
+            replace_older_file=False,
+            sync=True
+            )
+
         self.play(Write(fcoin_intersection_part), meaning_of_sets_Fc_Fcc[0].animate.set_color(BLUE))
+
+        self.wait(1)
+
+        _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
+            scene=self,
+            text= """And part from the double heads coin
+                   """ ,
+            cue_word=None,
+            file_name="from_the_double_heads_coin",
+            replace_older_file=False,
+            sync=True
+            )
+
         self.play(Write(nfcoin_intersection_part), meaning_of_sets_Fc_Fcc[1].animate.set_color(PURPLE))
+
+        self.wait(1)
 
         venn_diagram.add(
             intersenction_set,
@@ -296,6 +323,19 @@ class n_plus1_heads_fair_and_unfair_coin(Scene):
             fcoin_hn_part,
             nfcoin_hn_part
             )
+        
+        _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
+            scene=self,
+            text= """In other words,
+                     the probability of our intersection is equal to the following equation
+                   """ ,
+            cue_word="intersection",
+            file_name="intersection_is_equal",
+            replace_older_file=False,
+            sync=False
+            )
+        
+        self.wait(cue_time)
 
         self.play(venn_diagram.animate.to_edge(LEFT, buff=0))
 
@@ -303,13 +343,45 @@ class n_plus1_heads_fair_and_unfair_coin(Scene):
 
         self.play(Write(hn_inter_hnplus1), FadeOut(the_question_wants3))
 
+        self.wait(1.5)
+
+        _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
+            scene=self,
+            text= """In order to simplify our notation,
+                     let's call our intersection H all
+                   """ ,
+            cue_word="intersection",
+            file_name="call_our_intersection_by_H_all",
+            replace_older_file=False,
+            sync=False
+            )
+        
+        self.wait(cue_time)
+
         hn_inter_hnplus1_eq_hall.next_to(hn_inter_hnplus1, UP, buff=1, aligned_edge=LEFT)
         
         self.play(Write(hn_inter_hnplus1_eq_hall))
 
+        self.wait(1.8)
+
         hall.next_to(venn_diagram, RIGHT, buff=0.2)
 
         self.play(TransformMatchingTex(hn_inter_hnplus1, hall))
+
+        self.wait(1)
+
+        _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
+            scene=self,
+            text= """Note that our equation can be seen as the law of total probability,
+                     and as such, we can rewrite it as follows
+                   """ ,
+            cue_word="rewrite",
+            file_name="total_probability_law",
+            replace_older_file=False,
+            sync=False
+            )
+        
+        self.wait(cue_time)
 
         hall2.scale(0.9).next_to(venn_diagram, RIGHT, buff=0.2)
         self.play(TransformMatchingTex(hall,hall2))
@@ -318,30 +390,121 @@ class n_plus1_heads_fair_and_unfair_coin(Scene):
 
         p_of_fcoin_unfcoin.scale(0.85)
         p_of_fcoin_unfcoin.next_to(hall2, DOWN, buff=0.3, aligned_edge=LEFT)
-        
 
         p_of_hall_given_group.next_to(p_of_fcoin_unfcoin, RIGHT, buff=2 , aligned_edge=UP)
 
         p_of_fcoin_unfcoin.next_to(p_of_hall_given_group, LEFT, buff=2 )
 
+        self.wait(2)
+
+        _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
+            scene=self,
+            text= """Since each coin is chosen at random, 
+                     their probabilities are one half.
+                   """ ,
+            cue_word="probabilities",
+            file_name="each_coin_is_chosen_at_random",
+            replace_older_file=False,
+            sync=False
+            )
+
+        self.wait(cue_time)
+
         self.play(Write(p_of_fcoin_unfcoin))
 
+        self.wait(1.5)
 
+        self.play(FadeOut(meaning_of_sets_Fc_Fcc))
         self.play(Write(p_of_hall_given_group[0][0]))
 
-        self.play(Write(p_of_hall_given_group[0][1]))
+        _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
+            scene=self,
+            text= """The probability of H all given a fair coin
+                     can be read as the probability of n plus 1 heads out of a fair coin
+                   """ ,
+            cue_word="n plus 1",
+            file_name="n_plus_1_heads_out_of_a_fair_coin",
+            replace_older_file=True,
+            sync=False
+            )
+
+        self.wait(cue_time)
+
+        all_heads_example.move_to(meaning_of_sets_Fc_Fcc.get_center())
+
+        self.play(FadeIn(all_heads_example), run_time=remaning_time_after_cue)
+
+        self.wait(2)
+
+        _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
+            scene=self,
+            text= """
+                     which is one half to the power of n plus 1.
+                   """ ,
+            cue_word="one half",
+            file_name="the_power_of_n_plus_1",
+            replace_older_file=True,
+            sync=False
+            )
+
+        self.wait(cue_time)
+
+        self.play(Write(p_of_hall_given_group[0][1], run_time=remaning_time_after_cue))
+
+        self.wait(1.5)
 
         self.play(Write(p_of_hall_given_group[1][0]))
 
-        self.play(Write(p_of_hall_given_group[1][1]))
+        _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
+            scene=self,
+            text= """The probability of H all given an unfair coin 
+                     can be read as the probability of n plus 1 heads out of a double heads coin,
+                     which can only be 1
+                   """ ,
+            cue_word="which",
+            file_name="n_plus_1_heads_out_of_a_double_heads_coin",
+            replace_older_file=False,
+            sync=False
+        )
+
+        self.wait(cue_time)
+
+        self.play(Write(p_of_hall_given_group[1][1]), run_time=remaning_time_after_cue)
+        self.play(FadeOut(all_heads_example))
         
         hall3.move_to(hall2.get_center()).align_to(hall2, LEFT)
+
+        self.wait(1)
+
+        _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
+            scene=self,
+            text= """Now, we can rewrite our H all equation as follows
+                   """ ,
+            cue_word=None,
+            file_name="rewrite_our_h_all_equation",
+            replace_older_file=False,
+            sync=True
+        )
 
         self.play(TransformMatchingTex(hall2, hall3))
 
         hall4.move_to(hall3.get_center()).align_to(hall3, LEFT)
 
+        self.wait(1.5)
+
         self.play(TransformMatchingTex(hall3, hall4))
+
+        _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
+            scene=self,
+            text= """Let's update our main equation.
+                   """ ,
+            cue_word="update",
+            file_name="update_our_main_equation",
+            replace_older_file=False,
+            sync=False
+        )
+
+        self.wait(cue_time)
 
         self.play(hall4.animate.scale(0.7))
 
@@ -360,25 +523,93 @@ class n_plus1_heads_fair_and_unfair_coin(Scene):
 
         the_question_wants4.move_to(the_question_wants3.get_center()).align_to(the_question_wants3, LEFT)
 
+        self.wait(1.5)
+        
         self.play(TransformMatchingTex(the_question_wants3, the_question_wants4))
 
         self.play(FadeOut(hall4), FadeOut(hn_inter_hnplus1_eq_hall))
 
+        _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
+            scene=self,
+            text= """Now, let's find the probability of H n
+                   """ ,
+            cue_word="of",
+            file_name="probability_of_H_n",
+            replace_older_file=False,
+            sync=False
+        )
+
+        self.wait(cue_time)
+
         self.play(
             the_question_wants4[0].animate.set_opacity(0.25),
             the_question_wants4[-1][:-6].animate.set_opacity(0.25))
+
+        self.wait(2)
+
+        _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
+            scene=self,
+            text= """Note that part of the H n outcomes comes from the fair coin.
+                   """ ,
+            cue_word=False,
+            file_name="hn_outcomes_are_from_the_fair_coin",
+            replace_older_file=False,
+            sync=True
+        )
         
         self.play(fcoin_hn_part.animate.set_opacity(1))
+
+        _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
+            scene=self,
+            text= """And part from the double heads coin
+                   """ ,
+            cue_word=None,
+            file_name="from_the_double_heads_coin",
+            replace_older_file=False,
+            sync=True
+            )
+
+
         self.play(nfcoin_hn_part.animate.set_opacity(1))
+
+        self.wait(1.5)
 
         self.play(FadeOut(the_question_wants4))
 
         p_of_hn_eq1.move_to(the_question_wants4.get_center()).align_to(the_question_wants4, LEFT)
 
-        self.play(Write(p_of_hn_eq1))
+        _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
+            scene=self,
+            text= """In other words,
+                     the probability of H n is equal to the following equation
+                   """ ,
+            cue_word="H n",
+            file_name="In_other_words_P_of_hn",
+            replace_older_file=False,
+            sync=False
+            )
+        
+        self.wait(cue_time)
+        
+        self.play(Write(p_of_hn_eq1), run_time=remaning_time_after_cue)
 
         p_of_hn_eq2.scale(.9)
         p_of_hn_eq2.move_to(the_question_wants4.get_center()).align_to(the_question_wants4, LEFT)
+
+        self.wait(2)
+
+        _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
+            scene=self,
+            text= """Note that our equation can be seen as the law of total probability,
+                     and as such, we can rewrite it as follows:
+                   """ ,
+            cue_word="rewrite",
+            file_name="total_probability_law",
+            replace_older_file=False,
+            sync=False
+            )
+        
+        self.wait(cue_time)
 
         self.play(TransformMatchingTex(p_of_hn_eq1, p_of_hn_eq2))
 
@@ -388,31 +619,130 @@ class n_plus1_heads_fair_and_unfair_coin(Scene):
 
         p_of_hn_given_fc3.move_to(p_of_hn_given_fc1.get_center()).align_to(p_of_hn_given_fc1, LEFT)
 
+        self.wait(1.5)
+        
         self.play(FadeIn(p_of_fcoin_unfcoin))
+
+        self.wait(1.5)
 
         self.play(Write(p_of_hn_given_fc1[0]))
 
         n_heads_example.move_to(meaning_of_sets_Fc_Fcc.get_center())
 
-        self.play(FadeOut(meaning_of_sets_Fc_Fcc))
-        self.play(FadeIn(n_heads_example))
+        _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
+            scene=self,
+            text= """The probability of H n given a fair coin
+                     can be read as 
+                     the probability of getting Heads in the first n tosses with a fair coin.
+                   """ ,
+            cue_word="n tosses",
+            file_name="n_heads_out_of_a_fair_coin",
+            replace_older_file=False,
+            sync=False
+            )
+        
+        self.wait(cue_time)
+
+        #self.play(FadeOut(meaning_of_sets_Fc_Fcc))
+        self.play(FadeIn(n_heads_example), run_time=remaning_time_after_cue)
+
+        self.wait(2)
+
+        _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
+            scene=self,
+            text= """The question mark on the n plus 1 coin toss can be either Heads or Tails. 
+                     It means that we have 2 possible outcomes.
+                   """ ,
+            cue_word="2 possible",
+            file_name="means_that_we_have_2",
+            replace_older_file=False,
+            sync=False
+            )
+        
+        self.wait(cue_time)
 
         self.play(FadeOut(n_heads_example))
         self.play(FadeIn(n_heads_outcomes_for_fc))
 
+        self.wait(1.5)
+
+        _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
+            scene=self,
+            text= """The sum of their probabilities is the following
+                   """ ,
+            cue_word=None,
+            file_name="sum_of_their_probabilities",
+            replace_older_file=False,
+            sync=True
+            )
+
         self.play(Write(p_of_hn_given_fc1[1]))
 
+        self.wait(2)
+
         self.play(TransformMatchingTex(p_of_hn_given_fc1, p_of_hn_given_fc2))
+
+        self.wait(2)
+
         self.play(TransformMatchingTex(p_of_hn_given_fc2, p_of_hn_given_fc3))
+
+        self.wait(1)
 
         self.play(Write(p_of_hn_given_fcc[0]))
 
         n_heads_outcomes_for_fcc = all_heads_example
         n_heads_outcomes_for_fcc.move_to(meaning_of_sets_Fc_Fcc.get_center())
 
+        _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
+            scene=self,
+            text= """The probability of H n given a double heads coin
+                     can be read as 
+                     the probability of getting Heads in the first n tosses with a double heads coin.
+                   """ ,
+            cue_word="n tosses",
+            file_name="n_heads_out_of_a_unfair_coin",
+            replace_older_file=False,
+            sync=False
+            )
+        
+        self.wait(cue_time)
+
         self.play(FadeOut(n_heads_outcomes_for_fc))
-        self.play(FadeIn(n_heads_example))
+        self.play(FadeIn(n_heads_example), run_time=remaning_time_after_cue)
+
+        self.wait(1)
+
+        _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
+            scene=self,
+            text= """The question mark on the n plus 1 coin toss can only be Heads, 
+                     revealing one possible outcome.
+                   """ ,
+            cue_word="Heads",
+            file_name="can_only_be_Heads",
+            replace_older_file=False,
+            sync=False
+            )
+        
+        self.wait(cue_time)
+
         self.play(TransformMatchingTex(n_heads_example, n_heads_outcomes_for_fcc))
+
+        self.wait(remaning_time_after_cue)
+
+        self.wait(2)
+
+        _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
+            scene=self,
+            text= """Since a double heads coin can only show Heads, 
+                     the probability of this outcome can only be 1
+                   """ ,
+            cue_word="only be",
+            file_name="can_only_be_1",
+            replace_older_file=False,
+            sync=False
+            )
+        
+        self.wait(cue_time)
 
         self.play(Write(p_of_hn_given_fcc[1]))
 
@@ -421,12 +751,28 @@ class n_plus1_heads_fair_and_unfair_coin(Scene):
         p_of_hn_eq3.move_to(p_of_hn_eq2.get_center()).align_to(p_of_hn_eq2, LEFT)
         p_of_hn_eq4.move_to(p_of_hn_eq2.get_center()).align_to(p_of_hn_eq2, LEFT)
 
+        _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
+            scene=self,
+            text= """Now, we can rewrite our h n equation as follows
+                   """ ,
+            cue_word=None,
+            file_name="rewrite_our_h_n_equation",
+            replace_older_file=False,
+            sync=True
+        )
+
+
         self.play(TransformMatchingTex(p_of_hn_eq2, p_of_hn_eq3))
+
+        self.wait(2)
+
         self.play(TransformMatchingTex(p_of_hn_eq3, p_of_hn_eq4))
+
+        self.wait(1)
 
         self.play(
             FadeOut(p_of_fcoin_unfcoin),
-            FadeOut(p_of_hn_given_group),
+            FadeOut(p_of_hn_given_group[1]),
             FadeOut(p_of_hn_given_fc3),
             p_of_hn_eq4.animate.next_to(venn_diagram, RIGHT, buff=.2, aligned_edge=UP)
         )
@@ -434,14 +780,75 @@ class n_plus1_heads_fair_and_unfair_coin(Scene):
         the_question_wants4.set_opacity(1)
         self.play(FadeIn(the_question_wants4))
         the_question_wants5.move_to(the_question_wants4.get_center()).align_to(the_question_wants4, LEFT)
+        
+        _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
+            scene=self,
+            text= """Let's update our main equation
+                   """ ,
+            cue_word=None,
+            file_name="update_our_main_equation",
+            replace_older_file=False,
+            sync=True
+        )
+        
         self.play(TransformMatchingTex(the_question_wants4, the_question_wants5))
         the_question_wants6.move_to(the_question_wants4.get_center()).align_to(the_question_wants4, LEFT)
-        self.play(TransformMatchingTex(the_question_wants5, the_question_wants6))
+
+        self.wait(2)
+
+        self.play(TransformMatchingTex(the_question_wants5, the_question_wants6), FadeOut(p_of_hn_eq4))
         the_question_wants7.move_to(the_question_wants4.get_center()).align_to(the_question_wants4, LEFT)
+        
+        _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
+            scene=self,
+            text= """One half can be written as 2 to the power of minus 1
+                   """ ,
+            cue_word="minus",
+            file_name="written_as_2_to",
+            replace_older_file=False,
+            sync=False
+        )
+
+        self.wait(cue_time)
+        
         self.play(TransformMatchingTex(the_question_wants6, the_question_wants7))
         the_question_wants8.move_to(the_question_wants4.get_center()).align_to(the_question_wants4, LEFT)
+        
+        self.wait(2)
+        
         self.play(TransformMatchingTex(the_question_wants7, the_question_wants8))
         the_question_wants9.move_to(the_question_wants4.get_center()).align_to(the_question_wants4, LEFT)
+        
+        _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
+            scene=self,
+            text= """Here we have a solution,
+                     but if you don't like the minus n as an exponential,
+                     we can work on it a little more
+                   """ ,
+            cue_word=None,
+            file_name="a_little_more",
+            replace_older_file=False,
+            sync=True
+        )
+
         self.play(TransformMatchingTex(the_question_wants8, the_question_wants9))
         the_question_wants10.move_to(the_question_wants4.get_center()).align_to(the_question_wants4, LEFT)
+        
+        self.wait(2)
+        
         self.play(TransformMatchingTex(the_question_wants9, the_question_wants10))
+
+        self.wait(1)
+
+        _, cue_time, remaning_time_after_cue = add_audio_to_video_from_text(
+            scene=self,
+            text= """There we have it
+                   """ ,
+            cue_word=None,
+            file_name="end",
+            replace_older_file=False,
+            sync=True
+        )
+
+        self.wait(2)
+
