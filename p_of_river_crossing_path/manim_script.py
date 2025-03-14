@@ -212,19 +212,80 @@ class p_of_river_crossing_path(Scene):
 
         self.play(Write(c_sub_sets))
 
-        self.play(FadeOut(c_sub_sets))
+        self.play(FadeOut(b_intersection_sub_sets))
 
-        #a_equal_untion_group = VGroup( c_sub_sets[0], MathTex("\cup").next_to(c_sub_sets[0], RIGHT, buff=.2), c_sub_sets[1], MathTex("\cup").next_to(c_sub_sets[1], RIGHT, buff=.2) , c_sub_sets[2], MathTex("\cup").next_to(c_sub_sets[2], RIGHT, buff=.2), c_sub_sets[3])
-        a_equal_untion_group = VGroup(MathTex("A ="), c_sub_sets[0], MathTex("\cup").next_to(c_sub_sets[0], RIGHT, buff=.2), c_sub_sets[1], MathTex("\cup").next_to(c_sub_sets[1], RIGHT, buff=.2) , c_sub_sets[2], MathTex("\cup").next_to(c_sub_sets[2], RIGHT, buff=.2), c_sub_sets[3])
+        self.play(c_sub_sets.animate.move_to(b_intersection_sub_sets.get_center()))
+
+        a_equal_untion_group = VGroup(MathTex("A ="), c_sub_sets[0].copy(), MathTex("\cup").next_to(c_sub_sets[0], RIGHT, buff=.2), c_sub_sets[1].copy(), MathTex("\cup").next_to(c_sub_sets[1], RIGHT, buff=.2) , c_sub_sets[2].copy(), MathTex("\cup").next_to(c_sub_sets[2], RIGHT, buff=.2), c_sub_sets[3].copy())
         a_equal_untion_group.arrange(RIGHT, buff=.2 ,center=False)
         a_equal_untion_group.next_to(b_intersection_sub_sets, DOWN, buff=.2)
-        #a_equal_untion_group.next_to(b_intersection_sub_sets, DOWN, buff=0.2)
 
         self.play(FadeIn(a_equal_untion_group))
-        #self.play(Transform(c_sub_sets, a_equal_untion_group))
-        #self.play(Write(a_equal_untion_group[1::2]))
-        #self.play(a_equal_untion_group.animate.arrange(RIGHT, buff=.2 ,center=False))
-        #a_equal_untion_group.add(MathTex("A =").next_to(a_equal_untion_group, LEFT, buff=.2))
-        #self.play(Write(a_equal_untion_group[-1]))
+
+        self.play(FadeOut(a_equal_untion_group))
+
+
+        p_of_a_group_1 = VGroup(
+            MathTex("P(A) = P(C_{1,4}) + P(C_{1,3,5}) + P(C_{2,5}) + P(C_{2,3,4})"),
+            MathTex("- P(C_{1,4} \cap C_{1,3,5}) - P(C_{1,4} \cap C_{2,5}) - P(C_{1,4} \cap C_{2,3,4})"),
+            MathTex("- P(C_{1,3,5} \cap C_{2,5}) - P(C_{1,3,5} \cap C_{2,3,4}) - P(C_{2,5} \cap C_{2,3,4})"),
+            MathTex("+ P(C_{1,4} \cap C_{1,3,5} \cap C_{2,5}) + P(C_{1,4} \cap C_{1,3,5} \cap C_{2,3,4})"),
+            MathTex("+ P(C_{1,4} \cap C_{2,5} \cap C_{2,3,4}) + P(C_{1,3,5} \cap C_{2,5} \cap C_{2,3,4})"),
+            MathTex("- P(C_{1,4} \cap C_{1,3,5} \cap C_{2,5} \cap C_{2,3,4})")
+        ).arrange(DOWN, buff=.2, aligned_edge=LEFT).next_to(c_sub_sets, DOWN, buff=.2)
+        
+        
+        #p_of_a_initial_part = MathTex("P(A) = P(C_{1,4}) + P(C_{1,3,5}) + P(C_{2,5}) + P(C_{2,3,4})")
+        #p_of_a_initial_part.move_to(a_equal_untion_group.get_center())
+        
+        self.play(Write(p_of_a_group_1[0]))
+
+        self.play(FadeOut(river_bridge_group), FadeOut(graph_group), FadeOut(c_sub_sets))
+
+        #p_of_a_second_part =  MathTex("- P(C_{1,4} \cap C_{1,3,5}) - P(C_{1,4} \cap C_{2,5}) - P(C_{1,4} \cap C_{2,3,4}) - P(C_{1,3,5} \cap C_{2,5})")
+        #p_of_a_second_part.scale(.7)
+        #p_of_a_second_part.next_to(p_of_a_initial_part, DOWN, aligned_edge=RIGHT)
+
+        self.add(p_of_a_group_1[1:2+1])
+        self.add(p_of_a_group_1[3:4+1])
+        self.add(p_of_a_group_1[-1])
+
+        c14_inter_c235_1 = MathTex("C_{1,4} \cap C_{1,3,5} =", " B_{1} \cap B_{4} \; \; \; \cap \; \; \; B_{1} \cap B_{3} \cap B_{5}")
+        c14_inter_c235_1.next_to(p_of_a_group_1, DOWN, buff=1)
+
+        self.play(Write(c14_inter_c235_1))
+        
+        c14_inter_c235_2 = MathTex("C_{1,4} \cap C_{1,3,5} =", " B_{1} \cap B_{3} \cap B_{4} \cap B_{5}")
+        c14_inter_c235_2.move_to(c14_inter_c235_1.get_center()).align_to(c14_inter_c235_1, LEFT)
+
+        self.play(TransformMatchingTex(c14_inter_c235_1, c14_inter_c235_2))
+
+        c14_inter_c235_3 = MathTex("C_{1,4} \cap C_{1,3,5} =", " C_{1,3,4,5}")
+        c14_inter_c235_3.move_to(c14_inter_c235_2.get_center()).align_to(c14_inter_c235_2, LEFT)
+
+        self.play(TransformMatchingTex(c14_inter_c235_2, c14_inter_c235_3))
+
+        p_of_a_group_2 = VGroup(
+            MathTex("P(A) = P(C_{1,4}) + P(C_{1,3,5}) + P(C_{2,5}) + P(C_{2,3,4})"),
+            MathTex("- P(C_{1,3,4,5}) - P(C_{1,2,4,5}) - P(C_{1,2,3,4})"),
+            MathTex("- P(C_{1,2,3,5}) - P(C_{1,2,3,4,5}) - P(C_{2,3,4,5})"),
+            MathTex("+ P(C_{1,2,3,4,5}) + P(C_{1,2,3,4,5})"),
+            MathTex("+ P(C_{1,2,3,4,5}) + P(C_{1,2,3,4,5})"),
+            MathTex("- P(C_{1,2,3,4,5})")
+        ).arrange(DOWN, buff=.2, aligned_edge=LEFT).next_to(c_sub_sets, DOWN, buff=.2)
+
+        self.play(FadeOut(p_of_a_group_1))
+        self.play(FadeIn(p_of_a_group_2))
+
+        p_of_a_group_3 = VGroup(
+            MathTex("P(A) = P(C_{1,4}) + P(C_{1,3,5}) + P(C_{2,5}) + P(C_{2,3,4})"),
+            MathTex("- P(C_{1,3,4,5}) - P(C_{1,2,4,5}) - P(C_{1,2,3,4})"),
+            MathTex("- P(C_{1,2,3,5}) - P(C_{2,3,4,5})"),
+            MathTex("+ 2 \cdot P(C_{1,2,3,4,5})")
+        ).arrange(DOWN, buff=.2, aligned_edge=LEFT).next_to(c_sub_sets, DOWN, buff=.2)
+
+        self.play(FadeOut(p_of_a_group_2))
+        self.play(FadeIn(p_of_a_group_3))
+
 
         self.wait(5)
