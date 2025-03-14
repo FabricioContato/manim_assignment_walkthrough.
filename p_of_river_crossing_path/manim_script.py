@@ -11,6 +11,8 @@ class p_of_river_crossing_path(Scene):
         # Create a rectangle with the exact dimensions of the frame
         full_screen_rect = Rectangle(width=frame_width, height=frame_height, color=BLUE, stroke_width=20)
 
+        self.play(Write(full_screen_rect.copy().set_color(WHITE)))
+
         width = int(config.frame_width * 0.4)
         height = int(config.frame_height * 0.4)
 
@@ -287,5 +289,42 @@ class p_of_river_crossing_path(Scene):
         self.play(FadeOut(p_of_a_group_2))
         self.play(FadeIn(p_of_a_group_3))
 
+        p_of_a_group_4 = VGroup(
+            MathTex("P(A) = P(B_1 \cap B_4 ) + P(B_1 \cap B_3 \cap B_5) + P(B_2 \cap B_5) + P(B_2 \cap B_3 \cap B_4)"),
+            MathTex("- P(B_1 \cap B_3 \cap B_4 \cap B_5) - P(B_1 \cap B_2 \cap B_4 \cap B_5) - P(B_1 \cap B_2 \cap B_3 \cap B_4)"),
+            MathTex("- P(B_1 \cap B_2 \cap B_3 \cap B_5) - P(B_2 \cap B_3 \cap B_4 \cap B_5)"),
+            MathTex("+ 2 \cdot P(B_1 \cap B_2 \cap B_3 \cap B_4 \cap B_5)")
+        ).scale(.9).arrange(DOWN, buff=.2, aligned_edge=LEFT).next_to(c_sub_sets, DOWN, buff=.2)
+
+        self.play(FadeOut(p_of_a_group_3))
+        self.play(FadeIn(p_of_a_group_4))
+
+        self.play(FadeOut(p_of_a_group_4))
+        self.play(FadeOut(c14_inter_c235_3))
+
+        a_equal_s_minus_complement = MathTex("A = S - A^{c}")
+
+        self.play(Write(a_equal_s_minus_complement))
+
+        p_of_a_equal_1_minus_p_of_complement = MathTex("P(A) = 1 - P(A^{c})")
+
+        self.play(FadeOut(a_equal_s_minus_complement))
+        self.play(FadeIn(p_of_a_equal_1_minus_p_of_complement))
+
+
+        ac_equal_to_union = MathTex("A^{c} = O_{0} \cup O_{1} \cup O_{2} \cup O_{3}")
+        ac_equal_to_union.next_to(p_of_a_equal_1_minus_p_of_complement, DOWN, buff=.4)
+
+        O_info = VGroup(
+            VGroup(MathTex("O_{0}"), Text(" : Outcomes with 0 open bridges that don't allow crossing")).arrange(RIGHT),
+            VGroup(MathTex("O_{1}"), Text(" : Outcomes with 1 open bridges that don't allow crossing")).arrange(RIGHT),
+            VGroup(MathTex("O_{2}"), Text(" : Outcomes with 2 open bridges that don't allow crossing")).arrange(RIGHT),
+            VGroup(MathTex("O_{3}"), Text(" : Outcomes with 3 open bridges that don't allow crossing")).arrange(RIGHT)
+            ).arrange(DOWN).scale(.6).next_to(ac_equal_to_union, DOWN, buff=.4)
+
+        self.play(Write(ac_equal_to_union))
+        self.play(Write(O_info))
+
+        
 
         self.wait(5)
