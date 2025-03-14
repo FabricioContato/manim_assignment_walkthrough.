@@ -9,7 +9,7 @@ class p_of_river_crossing_path(Scene):
         frame_height = config.frame_height
 
         # Create a rectangle with the exact dimensions of the frame
-        full_screen_rect = Rectangle(width=frame_width, height=frame_height, color=BLUE, fill_opacity=1)
+        full_screen_rect = Rectangle(width=frame_width, height=frame_height, color=BLUE, stroke_width=20)
 
         width = int(config.frame_width * 0.4)
         height = int(config.frame_height * 0.4)
@@ -26,8 +26,12 @@ class p_of_river_crossing_path(Scene):
         left_rect = Rectangle(height=height, width=width, color=GREEN, fill_opacity=1)
         left_rect.to_edge(LEFT, buff=0)
 
+        label_A = Text("a").scale(2).move_to(left_rect.get_center())
+
         right_rect = Rectangle(height=height, width=width, color=GREEN, fill_opacity=1)
         right_rect.to_edge(RIGHT, buff=0)
+
+        label_B = Text("b").scale(2).move_to(right_rect.get_center())
 
         dif = Difference(full_screen_rect, top_rect)
         dif = Difference(dif, bot_rect)
@@ -56,15 +60,171 @@ class p_of_river_crossing_path(Scene):
 
         bridge3 = Rectangle(height=height, width=width, color=LIGHT_BROWN, fill_opacity=1) 
 
+        bridge1 = VGroup(bridge1, Text("1").move_to(bridge1.get_center()))
+        bridge2 = VGroup(bridge2, Text("2").move_to(bridge2.get_center()))
+        bridge3 = VGroup(bridge3, Text("3").move_to(bridge3.get_center()))
+        bridge4 = VGroup(bridge4, Text("4").move_to(bridge4.get_center()))
+        bridge5 = VGroup(bridge5, Text("5").move_to(bridge5.get_center()))
 
-        # Add the rectangle to the scene
-        #self.add(full_screen_rect)
-        #self.play(Write(full_screen_rect),
-        #          Write(top_rect),
-        #          Write(bot_rect),
-        #          Write(left_rect),
-        #          Write(right_rect),
-        #            run_time=5)
-        self.play(Write(dif), Write(bridge1), Write(bridge2))
-        self.play(Write(bridge4), Write(bridge5), Write(bridge3))
+        river_bridge_group = VGroup(full_screen_rect, label_A, label_B, dif, bridge1, bridge2, bridge3, bridge4, bridge5)
+        
+        def animate_bridge_state(bridge_number_list):
+
+            animation_list = []
+
+            for bridge_number in bridge_number_list:
+
+                opacity = 1 if bridge_number > 0 else 0.4
+
+                if abs(bridge_number) == 1:
+                    animation_list.append(bridge1.animate.set_opacity(opacity))
+                elif abs(bridge_number) == 2:
+                    animation_list.append(bridge2.animate.set_opacity(opacity))
+                elif abs(bridge_number) == 3:
+                    animation_list.append(bridge3.animate.set_opacity(opacity))
+                elif abs(bridge_number) == 4:
+                    animation_list.append(bridge4.animate.set_opacity(opacity))
+                elif abs(bridge_number) == 5:
+                    animation_list.append(bridge5.animate.set_opacity(opacity))
+
+            return AnimationGroup(animation_list)
+            
+        def animate_bridge_highlight(bridge_number_list):
+
+            animation_list = []
+
+            for bridge_number in bridge_number_list:
+
+                color = YELLOW if bridge_number > 0 else LIGHT_BROWN
+
+                if abs(bridge_number) == 1:
+                    animation_list.append(bridge1.animate.set_stroke(color))
+                elif abs(bridge_number) == 2:
+                    animation_list.append(bridge2.animate.set_stroke(color))
+                elif abs(bridge_number) == 3:
+                    animation_list.append(bridge3.animate.set_stroke(color))
+                elif abs(bridge_number) == 4:
+                    animation_list.append(bridge4.animate.set_stroke(color))
+                elif abs(bridge_number) == 5:
+                    animation_list.append(bridge5.animate.set_stroke(color))
+
+            return AnimationGroup(animation_list)
+
+        
+        question_text = Text("""
+                             You would like to go from point (a) to point (b) 
+                             There are 5 bridges on different branches of the river
+                             Bridge i is open with probability Pi, i=1,2,3,4,5. 
+                             Let A be the event that there is a path from (a) to (b)
+                             and let Bk be the event that kth bridge is open.
+                                     a) Find P(A)      b) Find P(B3|A)
+                             """).scale(0.6).to_edge(UP,buff=0)
+        
+        river_bridge_group.scale(0.6).next_to(question_text, DOWN, buff=0.2)
+        
+                
+        self.play(Write(question_text))
+        self.play(Write(river_bridge_group))
+
+        methods = Text("""
+            Find P(A) by:
+            1th : Inclusion-Exclusion Principle
+            2th : Finding P of the complement of A
+            3th : By finding P of each oucome of A
+             """).scale(0.6).move_to(question_text.get_center())
+        
+        self.play(FadeOut(question_text), Write(methods))
+
+
+        #we  can spot some simple paths that allow gooing from a to b
+
+        vertices = ["1", "4"]
+        edges = [("1", "4")]
+        layout = {"1": LEFT, "4": RIGHT}
+
+        _1_to_4 = Graph(vertices=vertices, edges=edges, layout=layout, labels=True)
+        
+        vertices = ["1", "3", "5"]
+        edges = [("1", "3"), ("3", "5")]
+        layout = {"1": LEFT, "3": RIGHT, "5": 3*RIGHT}
+        
+        _1_to_3_to_5 =  Graph(vertices=vertices, edges=edges, layout=layout, labels=True)
+        #_1_to_3_to_5.move_to(methods.get_center())
+
+        vertices = ["2", "5"]
+        edges = [("2", "5")]
+        layout = {"2": LEFT, "5": RIGHT}
+        
+        _2_to_5 =  Graph(vertices=vertices, edges=edges, layout=layout, labels=True)
+        #_2_to_5.move_to(methods.get_center())
+
+        vertices = ["2", "3", "4"]
+        edges = [("2", "3"), ("3", "4")]
+        layout = {"2": LEFT, "3": RIGHT, "4": 3*RIGHT}
+        
+        _2_to_3_to_4 =  Graph(vertices=vertices, edges=edges, layout=layout, labels=True)
+        #_2_to_3_to_4.move_to(methods.get_center())
+
+        graph_group = VGroup(_1_to_4, _1_to_3_to_5, _2_to_5, _2_to_3_to_4).arrange(RIGHT)
+        graph_group.scale(0.8).move_to(methods.get_center())
+
+        
+
+        self.play(FadeOut(methods), Write(graph_group))
+
+        self.play(animate_bridge_highlight([1,4]))
+
+        self.play(animate_bridge_state([-2,-3,-5]))
+        self.play(animate_bridge_state([2,-3,-5]))
+        self.play(animate_bridge_state([-2,3,-5]))
+        self.play(animate_bridge_state([-2,-3,5]))
+        self.play(animate_bridge_state([2,3,-5]))
+        self.play(animate_bridge_state([-2,3,5]))
+        self.play(animate_bridge_state([2,-3,5]))
+        self.play(animate_bridge_state([2,3,5]))
+
+        self.play(graph_group.animate.to_edge(UP))
+
+        b_intersection_sub_sets = VGroup(
+        MathTex("B_{1} \cap B_{4}").next_to(_1_to_4, DOWN, buff=0.2),
+        MathTex("B_{1} \cap B_{3} \cap B_{5}").next_to(_1_to_3_to_5, DOWN, buff=0.2),
+        MathTex("B_{2} \cap B_{5}").next_to(_2_to_5, DOWN, buff=0.2),
+        MathTex("B_{2} \cap B_{3} \cap B_{4}").next_to(_2_to_3_to_4, DOWN, buff=0.2))
+
+        c_sub_sets = VGroup(
+        MathTex("C_{1,4}").next_to(b_intersection_sub_sets[0], DOWN, buff=0.2),
+        MathTex("C_{1,3,5}").next_to(b_intersection_sub_sets[1], DOWN, buff=0.2),
+        MathTex("C_{2,5}").next_to(b_intersection_sub_sets[2], DOWN, buff=0.2),
+        MathTex("C_{2,3,4}").next_to(b_intersection_sub_sets[3], DOWN, buff=0.2))
+
+        self.play(Write(b_intersection_sub_sets[0]))
+
+        self.play(animate_bridge_highlight([1,-4,3,5]))
+
+        self.play(animate_bridge_state([-2,-4]))
+        self.play(animate_bridge_state([2,-4]))
+        self.play(animate_bridge_state([-2,4]))
+        self.play(animate_bridge_state([2,4]))
+
+        self.play(Write(b_intersection_sub_sets[1]))
+
+        self.play(Write(b_intersection_sub_sets[2:]))
+
+        self.play(Write(c_sub_sets))
+
+        self.play(FadeOut(c_sub_sets))
+
+        #a_equal_untion_group = VGroup( c_sub_sets[0], MathTex("\cup").next_to(c_sub_sets[0], RIGHT, buff=.2), c_sub_sets[1], MathTex("\cup").next_to(c_sub_sets[1], RIGHT, buff=.2) , c_sub_sets[2], MathTex("\cup").next_to(c_sub_sets[2], RIGHT, buff=.2), c_sub_sets[3])
+        a_equal_untion_group = VGroup(MathTex("A ="), c_sub_sets[0], MathTex("\cup").next_to(c_sub_sets[0], RIGHT, buff=.2), c_sub_sets[1], MathTex("\cup").next_to(c_sub_sets[1], RIGHT, buff=.2) , c_sub_sets[2], MathTex("\cup").next_to(c_sub_sets[2], RIGHT, buff=.2), c_sub_sets[3])
+        a_equal_untion_group.arrange(RIGHT, buff=.2 ,center=False)
+        a_equal_untion_group.next_to(b_intersection_sub_sets, DOWN, buff=.2)
+        #a_equal_untion_group.next_to(b_intersection_sub_sets, DOWN, buff=0.2)
+
+        self.play(FadeIn(a_equal_untion_group))
+        #self.play(Transform(c_sub_sets, a_equal_untion_group))
+        #self.play(Write(a_equal_untion_group[1::2]))
+        #self.play(a_equal_untion_group.animate.arrange(RIGHT, buff=.2 ,center=False))
+        #a_equal_untion_group.add(MathTex("A =").next_to(a_equal_untion_group, LEFT, buff=.2))
+        #self.play(Write(a_equal_untion_group[-1]))
+
         self.wait(5)
